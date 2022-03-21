@@ -13,7 +13,10 @@
   "scripts": {
     "build": "npm run build --workspaces",
     "lint": "eslint .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "start": "run-p start:*",
+    "start:photo-backend": "npm run start --workspace=photo-backend",
+    "start:photo-uploader": "npm run start --workspace=photo-uploader"
   },
   "devDependencies": {
     "eslint": "^8.11.0",
@@ -24,6 +27,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.7",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.6.0",
     "typescript": "~4.6.2"
   }
