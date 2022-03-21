@@ -1,0 +1,16 @@
+{
+  "extends": "@tsconfig/node14/tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "../lib",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
+  },
+  "include": [
+    "./**/*",
+    "declarations.d.ts"
+  ],
+  "exclude": [
+  ]
+}
