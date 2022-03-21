@@ -1,3 +1,5 @@
+import 'source-map-support/register';
+
 import express from 'express';
 import createDebug from 'debug';
 import dotenv from 'dotenv-defaults';
