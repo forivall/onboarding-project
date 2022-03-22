@@ -1,6 +1,8 @@
 <div class="uploader">
   <input type="file" (change)="onFileChange($event)" accept="image/*" />
-  <button (click)="upload()" [disabled]="uploading">Upload file</button>
+  <button (click)="upload()" [disabled]="!file || uploading">
+    Upload file
+  </button>
   <div>
     <ng-container *ngIf="uploadResponse" else #uploadingBlock>
       Upload Successful

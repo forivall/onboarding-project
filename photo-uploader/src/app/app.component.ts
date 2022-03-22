@@ -73,7 +73,7 @@ export class AppComponent {
 
   deletePhoto(id: string) {
     this.http.delete(`/api/photos/${id}`).subscribe(() => {
-      this.photos.filter((photo) => photo._id !== id);
+      this.photos = this.photos.filter((photo) => photo._id !== id);
       // optional: could reload the entire list here instead.
     });
   }

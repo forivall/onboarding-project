@@ -1,7 +1,10 @@
 import type express from 'express';
 import multer from 'multer';
+import createDebug from 'debug';
 
 import * as db from './db';
+
+const debug = createDebug('photo-backend:photos');
 
 /** Mongodb's document limit is 16MB, so we set our filesize limit to 15MB */
 const fifteenMegabytes = 15 << 20; // eslint-disable-line no-bitwise
@@ -63,8 +66,14 @@ export const list: AsyncRequestHandler = async (req, res) => {
   });
 };
 
-// TODO: finish
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const del: AsyncRequestHandler = (req, res) => {
-  throw new Error('TODO delete');
+export const del: AsyncRequestHandler = async (req, res) => {
+  const photo = await db.PhotoModel.findByIdAndRemove(req.params.id, {
+    projection: { data: false },
+  });
+  debug('delete photo %o', photo);
+  if (!photo) {
+    res.status(404).send();
+    return;
+  }
+  res.status(200).send();
 };
