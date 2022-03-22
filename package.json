@@ -13,6 +13,7 @@
   "scripts": {
     "build": "npm run build --workspaces",
     "lint": "eslint .",
+    "test-ci": "npm run test --workspace=photo-backend",
     "prepare": "husky install",
     "start": "run-p start:*",
     "start:photo-backend": "npm run start --workspace=photo-backend",
