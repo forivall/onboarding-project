@@ -15,3 +15,9 @@ connection by creating a `.env` file, and overriding settings from the
 
 [workspaces]: https://docs.npmjs.com/cli/v8/using-npm/workspaces
 [mongodb-install]: https://docs.mongodb.com/manual/administration/install-community/
+
+## Running
+
+- `npm install`
+- `npm run build --workspace=photo-backend`
+- `npm start`
