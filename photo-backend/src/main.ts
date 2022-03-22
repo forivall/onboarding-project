@@ -33,7 +33,7 @@ app.post(
 );
 app.get('/api/photos/:id', asyncHandler(photos.read));
 app.get('/api/photos', asyncHandler(photos.list));
-app.delete('/api/photos', asyncHandler(photos.del));
+app.delete('/api/photos/:id', asyncHandler(photos.del));
 
 let server: import('http').Server;
 async function start() {

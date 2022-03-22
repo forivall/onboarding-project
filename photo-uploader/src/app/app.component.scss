@@ -5,3 +5,22 @@
   margin-top: 1em;
   max-width: 800px;
 }
+
+.photos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.photo-tile {
+  margin: 0.5rem;
+}
+
+.photo {
+  max-width: 300px;
+  max-height: 300px;
+}
+
+.pull-right {
+  float: right;
+}
