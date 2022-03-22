@@ -1,6 +1,11 @@
 {
   "folders": [
-    {"path": "../photo-backend"},
-    {"path": "../photo-uploader"}
-  ]
+    { "path": "../photo-backend" },
+    { "path": "../photo-uploader" },
+  ],
+  "settings": {
+    "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+  }
 }

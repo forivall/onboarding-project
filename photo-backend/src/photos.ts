@@ -55,7 +55,7 @@ export const read: AsyncRequestHandler<{ id: string }> = async (req, res) => {
   res.status(200).set('Content-Disposition', disposition).send(photo.data);
 };
 export const list: AsyncRequestHandler = async (req, res) => {
-  const photos = await db.PhotoModel.find({}, { fileName: true });
+  const photos = await db.PhotoModel.find({}, { data: false });
   res.status(200).send({
     items: photos.map((it) => it.toJSON()),
   });
