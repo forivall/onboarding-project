@@ -1,5 +1,15 @@
-<input type="file" (change)="onFileChange($event)" />
-<button (click)="upload()">Upload file</button>
-<div>Upload Percent: {{ percentDone }}%</div>
+<div class="uploader">
+  <input type="file" (change)="onFileChange($event)" accept="image/*" />
+  <button (click)="upload()" [disabled]="uploading">Upload file</button>
+  <div>Upload Percent: {{ percentDone }}%</div>
 
-<ng-container *ngIf="uploadResponse"> Upload Successful </ng-container>
+  <ng-container *ngIf="uploadResponse">Upload Successful</ng-container>
+</div>
+
+<div class="uploads">
+  <figure *ngFor="let photo of photos">
+    <img src="/api/photos/{{ photo._id }}" />
+    <br />
+    {{ photo.fileName }}
+  </figure>
+</div>

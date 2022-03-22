@@ -34,7 +34,9 @@ export const create: AsyncRequestHandler = async (req, res) => {
     data: file.buffer,
     fileName: file.originalname,
   });
-  res.status(201).send({ id: String(photo.id) });
+  // probably use lodash instead
+  const { data: _omitted, ...photoJson } = photo.toJSON();
+  res.status(201).send(photoJson);
 };
 const storage = multer.memoryStorage();
 const upload = multer({ storage, limits: { fileSize: fifteenMegabytes } });

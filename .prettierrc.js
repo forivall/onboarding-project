@@ -4,5 +4,6 @@ const config = {
   singleQuote: true,
   trailingComma: 'es5',
   useTabs: false,
+  htmlWhitespaceSensitivity: 'ignore',
 };
 module.exports = config;

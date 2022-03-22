@@ -1,1 +1,32 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons+Outlined');
+
+@include mat.core();
+
+// pink-bluegrey theme https://github.com/angular/components/blob/12.2.4/src/material/core/theming/prebuilt/pink-bluegrey.scss
+// See https://v12.material.angular.io/guide/theming#using-a-pre-built-theme
+$primary: mat.define-palette(mat.$pink-palette, 700, 500, 900);
+$accent: mat.define-palette(mat.$blue-grey-palette, A200, A100, A400);
+
+$theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $primary,
+      accent: $accent,
+    ),
+  )
+);
+
+@include mat.all-component-themes($theme);
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  @extend .mat-app-background;
+}
