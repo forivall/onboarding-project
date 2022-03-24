@@ -1,20 +1,4 @@
-<div class="uploader">
-  <input type="file" (change)="onFileChange($event)" accept="image/*" />
-  <button (click)="upload()" [disabled]="!file || uploading">
-    Upload file
-  </button>
-  <div>
-    <ng-container *ngIf="uploadResponse" else #uploadingBlock>
-      Upload Successful
-    </ng-container>
-    <ng-template #uploadingBlock>
-      <ng-container *ngIf="uploading">
-        Upload Percent: {{ percentDone }}%
-      </ng-container>
-    </ng-template>
-    &nbsp;
-  </div>
-</div>
+<app-uploader (uploaded)="photos.push($event)"></app-uploader>
 
 <div class="photos">
   <div class="photo-tile" *ngFor="let photo of photos">

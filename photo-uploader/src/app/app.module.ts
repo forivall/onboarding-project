@@ -7,9 +7,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { UploaderComponent } from './uploader/uploader.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, UploaderComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
