@@ -14,7 +14,11 @@ dotenv.config({
 createDebug.enable(process.env.DEBUG);
 
 // import local after dotenv set up.
-import { bearerStrategy } from './app/auth';
+import {
+  anonymousStrategy,
+  bearerStrategy,
+  isLoggedInMiddleware,
+} from './app/auth';
 import * as db from './app/db';
 import * as photos from './app/photos';
 import * as users from './app/users';
@@ -27,7 +31,11 @@ const port = Number(process.env.API_PORT);
 const app = express();
 
 passport.use(bearerStrategy);
+passport.use(anonymousStrategy);
 const authMiddleware = passport.authenticate('bearer', {
+  session: false,
+}) as express.Handler;
+const optionalAuthMiddleware = passport.authenticate(['bearer', 'anonymous'], {
   session: false,
 }) as express.Handler;
 
@@ -47,8 +55,13 @@ app.post(
   ...photos.create.middleware!,
   asyncHandler(photos.create)
 );
-app.get('/api/photos/:id', authMiddleware, asyncHandler(photos.read));
-app.get('/api/photos', authMiddleware, asyncHandler(photos.list));
+app.get('/api/photos/:id', optionalAuthMiddleware, asyncHandler(photos.read));
+app.get(
+  '/api/photos',
+  optionalAuthMiddleware,
+  asyncHandler(isLoggedInMiddleware),
+  asyncHandler(photos.list)
+);
 app.delete('/api/photos/:id', authMiddleware, asyncHandler(photos.del));
 
 let server: import('http').Server;

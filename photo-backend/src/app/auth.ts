@@ -3,9 +3,12 @@ import {
   IVerifyOptions,
   Strategy as BearerStrategy,
 } from 'passport-http-bearer';
+import { Strategy as AnonyousStrategy } from 'passport-anonymous';
 import * as jose from 'jose';
 import { UserInfoData, UserSecretData } from './db';
+import { AsyncHandler } from './types';
 
+/** Just an identifier for this application */
 export const magicUri = 'urn:10kc:onboarding-photo-sharing';
 const pbkdf2Iterations = 10000; // arbitrarily chosen
 
@@ -15,11 +18,16 @@ export const bearerStrategy = new BearerStrategy((token, done) => {
   }, done);
 });
 
+export const anonymousStrategy = new AnonyousStrategy();
+
 type AsyncVerifyReturn = { user: any; options?: string | IVerifyOptions };
 async function verifyBearer(token: string): Promise<AsyncVerifyReturn> {
   // TODO: cache secret buffer
   const secret = Buffer.from(process.env.JWT_SECRET);
-  const verified = await jose.jwtVerify(token, secret);
+  const verified = await jose.jwtVerify(token, secret, {
+    audience: magicUri,
+    issuer: magicUri,
+  });
   return {
     user: verified.payload,
   };
@@ -79,3 +87,12 @@ export async function hashPassword(
     );
   });
 }
+
+/**
+ * For routes that allow anonymous access (listing public photos),
+ * add a header to indicate if the user's token is valid
+ */
+export const isLoggedInMiddleware: AsyncHandler = async (req, res, next) => {
+  res.set('X-Is-Logged-In', req.user ? 'true' : 'false');
+  next();
+};

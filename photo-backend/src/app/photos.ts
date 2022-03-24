@@ -2,14 +2,14 @@ import multer from 'multer';
 import createDebug from 'debug';
 
 import * as db from './db';
-import { AsyncRequestHandler } from './types';
+import { AsyncHandler } from './types';
 
 const debug = createDebug('photo-backend:photos');
 
 /** Mongodb's document limit is 16MB, so we set our filesize limit to 15MB */
 const fifteenMegabytes = 15 << 20; // eslint-disable-line no-bitwise
 
-export const create: AsyncRequestHandler = async (req, res) => {
+export const create: AsyncHandler = async (req, res) => {
   const { file } = req;
   if (!file || !file.mimetype.startsWith('image/')) {
     res.status(400).send({
@@ -30,7 +30,11 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage, limits: { fileSize: fifteenMegabytes } });
 create.middleware = [upload.single('file')];
 
-export const read: AsyncRequestHandler<{ id: string }> = async (req, res) => {
+/**
+ * If authentication is required, cookie auth should be supported for
+ * browser-oriented requests (ie. <img> tags)
+ */
+export const read: AsyncHandler<{ id: string }> = async (req, res) => {
   const photo = await db.PhotoModel.findById(req.params.id);
   if (!photo) {
     res.status(404).send();
@@ -44,14 +48,14 @@ export const read: AsyncRequestHandler<{ id: string }> = async (req, res) => {
 
   res.status(200).set('Content-Disposition', disposition).send(photo.data);
 };
-export const list: AsyncRequestHandler = async (req, res) => {
+export const list: AsyncHandler = async (req, res) => {
   const photos = await db.PhotoModel.find({}, { data: false });
   res.status(200).send({
     items: photos.map((it) => it.toJSON()),
   });
 };
 
-export const del: AsyncRequestHandler = async (req, res) => {
+export const del: AsyncHandler = async (req, res) => {
   // Use remove instead of delete so we can return 404 if doesnt exist.
   const photo = await db.PhotoModel.findByIdAndRemove(req.params.id, {
     projection: { data: false },

@@ -1,6 +1,6 @@
 import type express from 'express';
 
-export type AsyncRequestHandler<
+export type AsyncHandler<
   P = import('express-serve-static-core').ParamsDictionary,
   ResBody = any,
   ReqBody = any,

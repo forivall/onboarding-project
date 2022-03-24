@@ -1,7 +1,7 @@
 import * as crypto from 'crypto';
 import { createLoginToken, hashPassword, setPassword } from './auth';
 import * as db from './db';
-import { AsyncRequestHandler } from './types';
+import { AsyncHandler } from './types';
 
 interface RegisterUserRequest {
   email: string;
@@ -9,7 +9,7 @@ interface RegisterUserRequest {
   password: string;
 }
 
-export const register: AsyncRequestHandler = async (req, res) => {
+export const register: AsyncHandler = async (req, res) => {
   if (typeof req.body !== 'object') {
     res.status(400).send();
     return;
@@ -53,7 +53,7 @@ export interface LoginRequest {
   password: string;
 }
 
-export const login: AsyncRequestHandler = async (req, res) => {
+export const login: AsyncHandler = async (req, res) => {
   // Return 400 to all requests so no info is leaked
   const { email, password } = req.body as Partial<LoginRequest>;
   if (
