@@ -1,2 +1,2 @@
-import * as photosApi from './photos';
+import * as photosApi from './app/photos';
 export { photosApi };

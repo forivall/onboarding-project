@@ -14,10 +14,10 @@ dotenv.config({
 createDebug.enable(process.env.DEBUG);
 
 // import local after dotenv set up.
-import { bearerStrategy } from './auth';
-import * as db from './db';
-import * as photos from './photos';
-import * as users from './users';
+import { bearerStrategy } from './app/auth';
+import * as db from './app/db';
+import * as photos from './app/photos';
+import * as users from './app/users';
 
 // NOTE: in a production app, a full logger should be used.
 const debug = createDebug('photo-backend:main');
