@@ -4,5 +4,6 @@ namespace NodeJS {
     DEBUG: string;
     MONGODB_URI: string;
     API_PORT: string;
+    JWT_SECRET: string;
   }
 }

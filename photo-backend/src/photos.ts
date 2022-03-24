@@ -1,28 +1,13 @@
-import type express from 'express';
 import multer from 'multer';
 import createDebug from 'debug';
 
 import * as db from './db';
+import { AsyncRequestHandler } from './types';
 
 const debug = createDebug('photo-backend:photos');
 
 /** Mongodb's document limit is 16MB, so we set our filesize limit to 15MB */
 const fifteenMegabytes = 15 << 20; // eslint-disable-line no-bitwise
-
-type AsyncRequestHandler<
-  P = import('express-serve-static-core').ParamsDictionary,
-  ResBody = any,
-  ReqBody = any,
-  ReqQuery = import('express-serve-static-core').Query,
-  Locals extends { [key: string]: any } = { [key: string]: any }
-> = {
-  (
-    ...args: Parameters<
-      express.RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>
-    >
-  ): void | Promise<void>;
-  middleware?: express.RequestHandler[];
-};
 
 export const create: AsyncRequestHandler = async (req, res) => {
   const { file } = req;
@@ -67,6 +52,7 @@ export const list: AsyncRequestHandler = async (req, res) => {
 };
 
 export const del: AsyncRequestHandler = async (req, res) => {
+  // Use remove instead of delete so we can return 404 if doesnt exist.
   const photo = await db.PhotoModel.findByIdAndRemove(req.params.id, {
     projection: { data: false },
   });

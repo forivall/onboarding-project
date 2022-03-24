@@ -31,3 +31,28 @@ const photoSchema = new mongoose.Schema<PhotoData>(
 );
 
 export const PhotoModel = mongoose.model('Photo', photoSchema);
+
+export interface UserInfoData {
+  username: string;
+  email: string;
+}
+
+/** DO !NOT! trust this design. I havent analyzed it for security and such */
+export interface UserSecretData {
+  salt: Buffer;
+  key: Buffer;
+}
+
+export interface UserData
+  extends MongooseTimestamps,
+    UserInfoData,
+    UserSecretData {}
+
+const userSchema = new mongoose.Schema<UserData>({
+  username: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  salt: { type: Buffer, required: true },
+  key: { type: Buffer, required: true },
+});
+
+export const UserModel = mongoose.model('User', userSchema);
