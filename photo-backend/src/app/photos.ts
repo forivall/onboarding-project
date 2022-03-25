@@ -10,7 +10,12 @@ const debug = createDebug('photo-backend:photos');
 const fifteenMegabytes = 15 << 20; // eslint-disable-line no-bitwise
 
 export const create: AsyncHandler = async (req, res) => {
-  const { file } = req;
+  const { file, user } = req;
+  const userId = user?.sub;
+  if (!userId) {
+    res.status(401).send();
+    return;
+  }
   if (!file || !file.mimetype.startsWith('image/')) {
     res.status(400).send({
       message: 'Invalid file upload.',
@@ -19,6 +24,7 @@ export const create: AsyncHandler = async (req, res) => {
   }
 
   const photo = await db.PhotoModel.create({
+    createdBy: userId,
     data: file.buffer,
     fileName: file.originalname,
   });
@@ -56,10 +62,21 @@ export const list: AsyncHandler = async (req, res) => {
 };
 
 export const del: AsyncHandler = async (req, res) => {
+  const userId = req.user?.sub;
+  if (!userId) {
+    res.status(401).send();
+    return;
+  }
   // Use remove instead of delete so we can return 404 if doesnt exist.
-  const photo = await db.PhotoModel.findByIdAndRemove(req.params.id, {
-    projection: { data: false },
-  });
+  const photo = await db.PhotoModel.findOneAndRemove(
+    {
+      _id: req.params.id,
+      createdBy: { $in: [userId, null] },
+    },
+    {
+      projection: { data: false },
+    }
+  );
   debug('delete photo %o', photo);
   if (!photo) {
     res.status(404).send();

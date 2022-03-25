@@ -53,7 +53,10 @@ export const register: AsyncHandler = async (req, res) => {
     debug('register: err %j', err);
     throw err;
   }
-  const token = await createLoginToken(userInfo);
+  const token = await createLoginToken({
+    _id: user._id,
+    ...userInfo,
+  });
   res.status(201).send({
     token,
     user: {

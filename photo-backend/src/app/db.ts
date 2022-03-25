@@ -16,6 +16,7 @@ export interface MongooseTimestamps {
 }
 
 export interface PhotoData extends MongooseTimestamps {
+  createdBy: mongoose.Types.ObjectId;
   fileName?: string;
   data: Buffer;
   mimeType: string;
@@ -24,6 +25,7 @@ export interface PhotoData extends MongooseTimestamps {
 
 const photoSchema = new mongoose.Schema<PhotoData>(
   {
+    createdBy: mongoose.Types.ObjectId,
     fileName: String,
     data: { type: Buffer, required: true },
   },

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { PhotosService } from './photos.service';
 import { Subscription } from 'rxjs';
+import { AuthService } from './auth.service';
 
 // TODO: split photo display into sub-component(s) appropriately
 
@@ -12,5 +13,5 @@ import { Subscription } from 'rxjs';
 export class AppComponent {
   page = '';
   sub?: Subscription;
-  constructor(readonly photos: PhotosService) {}
+  constructor(readonly photos: PhotosService, readonly auth: AuthService) {}
 }

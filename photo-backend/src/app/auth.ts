@@ -33,20 +33,30 @@ async function verifyBearer(token: string): Promise<AsyncVerifyReturn> {
   };
 }
 
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    interface User extends jose.JWTPayload {}
+  }
+}
+
 // really, should be using oidc style token, but it's quicker to make up stuff
 // rather than look up and implement the standard
-export async function createLoginToken(user: UserInfoData) {
+export async function createLoginToken(
+  user: UserInfoData & { _id: { toString(): string } }
+) {
   // TODO: cache secret buffer
   const secret = Buffer.from(process.env.JWT_SECRET);
   const jwt = await new jose.SignJWT({
     username: user.username,
+    email: user.email,
   })
     .setIssuedAt()
     .setIssuer(magicUri)
     .setAudience(magicUri)
-    .setSubject(user.email)
+    .setSubject(user._id.toString())
     .setExpirationTime('2h') // TODO: refresh tokens would be nice
-    .setProtectedHeader({ alg: 'HS256' })
+    .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
     .sign(secret);
   return jwt;
 }

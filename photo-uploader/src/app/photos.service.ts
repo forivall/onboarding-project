@@ -1,5 +1,6 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { tap } from 'rxjs';
 import { AuthService } from './auth.service';
 import { PhotoListItem } from './types';
 
@@ -37,12 +38,14 @@ export class PhotosService {
         reportProgress: true,
         observe: 'events',
       })
-      .pipe((event) => {
-        if (event instanceof HttpResponse) {
-          const photo = event.body as PhotoListItem;
-          this.photos.push(photo);
-        }
-        return event;
-      });
+      .pipe(
+        tap((event) => {
+          if (event instanceof HttpResponse) {
+            const photo = event.body as PhotoListItem;
+            this.photos = [...this.photos, photo];
+          }
+          return event;
+        })
+      );
   }
 }

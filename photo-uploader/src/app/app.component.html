@@ -1,11 +1,17 @@
-<router-outlet></router-outlet>
+<div class="outlet-container">
+  <router-outlet></router-outlet>
+</div>
 
 <div class="photos">
   <div class="photo-tile" *ngFor="let photo of photos.photos">
     <img class="photo" src="/api/photos/{{ photo._id }}" />
     <br />
     {{ photo.fileName }}
-    <button class="pull-right" (click)="photos.deletePhoto(photo._id)">
+    <button
+      [hidden]="!auth.token"
+      class="pull-right"
+      (click)="photos.deletePhoto(photo._id)"
+    >
       delete
     </button>
   </div>

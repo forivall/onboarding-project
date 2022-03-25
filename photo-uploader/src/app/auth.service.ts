@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { tap } from 'rxjs';
 
 const storageKey = '10kc.auth.token';
 
@@ -30,15 +31,22 @@ export interface UserInfoRegister extends UserInfoLogin {
   providedIn: 'root',
 })
 export class AuthService {
+  // TODO: decode jwt to get id and load that, and then we can hide the delete
+  // button for other users photos
   token = window.sessionStorage.getItem(storageKey);
   constructor(private readonly http: HttpClient) {}
 
   register(info: UserInfoRegister) {
-    this.http.post('/api/user/register', info).subscribe((resp) => {
-      this.loggedIn(resp as LoginRegisterResponse);
-    });
+    return this.http
+      .post<LoginRegisterResponse>('/api/user/register', info)
+      .pipe(
+        tap((resp) => {
+          this.loggedIn(resp);
+        })
+      );
   }
 
+  // TODO: tap and require subscription instead
   login(info: UserInfoLogin) {
     this.http.post('/api/user/login', info).subscribe((resp) => {
       this.loggedIn(resp as LoginRegisterResponse);

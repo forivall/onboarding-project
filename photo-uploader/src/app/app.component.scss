@@ -1,9 +1,17 @@
 :host {
   display: block;
+  margin-top: 1em;
+}
+
+.outlet-container {
   margin-left: auto;
   margin-right: auto;
-  margin-top: 1em;
   max-width: 800px;
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
 }
 
 .photos {
