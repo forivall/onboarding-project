@@ -79,6 +79,11 @@ export const del: AsyncHandler = async (req, res) => {
   );
   debug('delete photo %o', photo);
   if (!photo) {
+    if (await db.PhotoModel.findById(req.params.id, { _id: true })) {
+      debug('delete: its not your photo!');
+      res.status(401).send();
+      return;
+    }
     res.status(404).send();
     return;
   }
