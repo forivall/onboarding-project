@@ -1,3 +1,7 @@
+<div class="pull-right">
+  <a [routerLink]="['/']">Back</a>
+</div>
+
 <input type="file" (change)="onFileChange($event)" accept="image/*" />
 <button (click)="upload()" [disabled]="!file || uploading">Upload file</button>
 <div>

@@ -1,5 +1,6 @@
 import 'source-map-support/register';
 
+import bodyParser from 'body-parser';
 import express from 'express';
 import createDebug from 'debug';
 import dotenv from 'dotenv-defaults';
@@ -41,6 +42,7 @@ const optionalAuthMiddleware = passport.authenticate(['bearer', 'anonymous'], {
 
 const logging = morgan('dev'); // I prefer pino, but it's annoying in dev
 app.use(logging);
+app.use(bodyParser.json());
 
 app.get('/api/ping', (req, res) => {
   res.send('pong');

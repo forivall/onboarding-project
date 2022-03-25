@@ -46,6 +46,7 @@ export async function createLoginToken(user: UserInfoData) {
     .setAudience(magicUri)
     .setSubject(user.email)
     .setExpirationTime('2h') // TODO: refresh tokens would be nice
+    .setProtectedHeader({ alg: 'HS256' })
     .sign(secret);
   return jwt;
 }

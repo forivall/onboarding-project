@@ -1,0 +1,19 @@
+<div *ngIf="!!auth.token; else login">
+  <div class="pull-right">
+    <button (click)="auth.logout()">Logout</button>
+  </div>
+  <a [routerLink]="['/upload']">Upload</a>
+</div>
+
+<ng-template #login>
+  Login |
+  <a [routerLink]="['/register']">Create Account</a>
+  <form (submit)="auth.login({ email, password })">
+    Email:
+    <input type="text" name="email" [(ngModel)]="email" />
+    Password:
+    <input type="password" name="password" [(ngModel)]="password" />
+    &nbsp;
+    <input type="submit" value="Login" />
+  </form>
+</ng-template>

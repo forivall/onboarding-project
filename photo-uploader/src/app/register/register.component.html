@@ -1,0 +1,12 @@
+<a [routerLink]="['/']">Login</a>
+| Create Account
+<form (submit)="doRegister()">
+  Email:
+  <input type="text" name="email" [(ngModel)]="email" />
+  Password:
+  <input type="password" name="password" [(ngModel)]="password" />
+  Confirm:
+  <input type="password" name="password2" [(ngModel)]="password2" />
+  &nbsp;
+  <input type="submit" value="Create Account" />
+</form>

@@ -1,10 +1,12 @@
-<app-uploader (uploaded)="photos.push($event)"></app-uploader>
+<router-outlet></router-outlet>
 
 <div class="photos">
-  <div class="photo-tile" *ngFor="let photo of photos">
+  <div class="photo-tile" *ngFor="let photo of photos.photos">
     <img class="photo" src="/api/photos/{{ photo._id }}" />
     <br />
     {{ photo.fileName }}
-    <button class="pull-right" (click)="deletePhoto(photo._id)">delete</button>
+    <button class="pull-right" (click)="photos.deletePhoto(photo._id)">
+      delete
+    </button>
   </div>
 </div>

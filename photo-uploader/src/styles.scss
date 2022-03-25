@@ -30,3 +30,12 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
   @extend .mat-app-background;
 }
+
+a,
+a:hover,
+a:visited {
+  color: #1976d2;
+}
+// a:visited {
+//   color: #9e19d2;
+// }

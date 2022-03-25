@@ -1,5 +1,6 @@
-import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, EventEmitter, Output } from '@angular/core';
+import { PhotosService } from '../photos.service';
 import { PhotoListItem } from '../types';
 
 @Component({
@@ -13,7 +14,7 @@ export class UploaderComponent {
   uploadResponse?: PhotoListItem;
   uploading = false;
   file?: File;
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly photos: PhotosService) {}
 
   onFileChange(event: Event) {
     this.percentDone = undefined;
@@ -27,27 +28,18 @@ export class UploaderComponent {
   upload() {
     if (!this.file) return;
 
-    const formData = new FormData();
-    formData.append('file', this.file);
-
     this.percentDone = 0;
     this.uploading = true;
 
-    this.http
-      .post('/api/photos', formData, {
-        reportProgress: true,
-        observe: 'events',
-      })
-      .subscribe((event) => {
-        if (event.type === HttpEventType.UploadProgress) {
-          if (event.total) {
-            this.percentDone = Math.round((100 * event.loaded) / event.total);
-          }
-        } else if (event instanceof HttpResponse) {
-          const photo = event.body as PhotoListItem;
-          this.uploadResponse = photo;
-          this.uploaded.emit(photo);
+    this.photos.uploadPhoto(this.file).subscribe((event) => {
+      if (event.type === HttpEventType.UploadProgress) {
+        if (event.total) {
+          this.percentDone = Math.round((100 * event.loaded) / event.total);
         }
-      });
+      } else if (event instanceof HttpResponse) {
+        const photo = event.body as PhotoListItem;
+        this.uploadResponse = photo;
+      }
+    });
   }
 }
