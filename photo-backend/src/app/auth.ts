@@ -13,9 +13,19 @@ export const magicUri = 'urn:10kc:onboarding-photo-sharing';
 const pbkdf2Iterations = 10000; // arbitrarily chosen
 
 export const bearerStrategy = new BearerStrategy((token, done) => {
-  verifyBearer(token).then((result) => {
-    done(null, result.user, result.options);
-  }, done);
+  verifyBearer(token).then(
+    (result) => {
+      done(null, result.user, result.options);
+    },
+    (err) => {
+      // TODO: this needs a more robust design
+      if (err instanceof jose.errors.JWTExpired) {
+        done(null);
+      } else {
+        done(err);
+      }
+    }
+  );
 });
 
 export const anonymousStrategy = new AnonyousStrategy();
