@@ -1,0 +1,20 @@
+name: Changelog Updated
+
+on:
+  pull_request:
+    branches: [dev]
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get changed files
+        uses: tj-actions/changed-files@v23.1
+        with:
+          files: CHANGELOG.md
+      - name: Fail if changelog was not updated
+        if: steps.changed-files.outputs.modified_files != 'CHANGELOG.md'
+        run: exit 1
+
